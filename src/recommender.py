@@ -3,14 +3,13 @@ import numpy as np
 import pandas as pd
 
 
-class MovieRecommender():
+class MovieRecommender(object):
     """Template class for a Movie Recommender system."""
 
     def __init__(self):
         """Constructs a MovieRecommender"""
         self.logger = logging.getLogger('reco-cs')
         # ...
-
 
     def fit(self, ratings):
         """
@@ -31,8 +30,7 @@ class MovieRecommender():
         # ...
 
         self.logger.debug("finishing fit")
-        return(self)
-
+        return self
 
     def transform(self, requests):
         """
@@ -54,7 +52,7 @@ class MovieRecommender():
         requests['rating'] = np.random.choice(range(1, 5), requests.shape[0])
 
         self.logger.debug("finishing predict")
-        return(requests)
+        return requests
 
 
 if __name__ == "__main__":
