@@ -44,6 +44,13 @@ def clean_meta_data(df: pd.DataFrame, in_place: bool = False) -> pd.DataFrame:
     # Genres
     new_df["genres"] = new_df["genres"].map(lambda x: stringify(obj=x))
 
+    # Filter problematic ids and set id to be an integer
+    new_df = new_df[new_df["id"].str.isnumeric()]
+    new_df["id"] = new_df["id"].astype(int)
+
+    # Add MovieId
+    new_df["MovieId"] = new_df.index + 1
+
     # Production Companies
     new_df["production_companies"] = new_df["production_companies"].map(lambda x: stringify(obj=x) if x is not np.NaN else np.NaN)
 
@@ -69,7 +76,11 @@ def clean_keywords(df: pd.DataFrame, in_place: bool = False) -> pd.DataFrame:
     else:
         new_df = df
 
-    new_df["keywords"] = new_df["keywords"].map(lambda x: stringify(obj=x) if x is not np.NaN else np.NaN)
+    # Format keywords
+    new_df["keywords"] = new_df["keywords"].map(lambda x: stringify(obj=x) if x is not np.NaN else np.NaN).astype(str)
+
+    # Add MovieId
+    new_df["MovieId"] = new_df.index + 1
 
     return new_df
 
