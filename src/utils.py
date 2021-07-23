@@ -108,3 +108,18 @@ def clean_movies(df: pd.DataFrame, in_place: bool = False) -> pd.DataFrame:
     new_df["Genres"] = new_df["Genres"].map(lambda x: ", ".join(x.split("|")))
 
     return new_df
+
+
+def percentileMetric(df: pd.DataFrame) -> float:
+    """
+    This scores predictions based on the top 5% of ratings grouped by user.
+
+    The dataframe is expected to have a "user", "predictedrating", and "actualrating" column.
+    :param df: Pandas dataframe holding the scores
+    :return: The mean of the actual scores
+    """
+    if type(df) is not pd.DataFrame:
+        raise ValueError("Error: df must be a pandas dataframe")
+
+    top5Percent = df[df.groupby("user")["predictedrating"].rank(pct=True) > 0.95]
+    return top5Percent["actualrating"].values.mean()
